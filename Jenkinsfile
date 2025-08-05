@@ -243,8 +243,8 @@ pipeline {
             // Archive test results and logs
             archiveArtifacts artifacts: '**/*.log, coverage/**/*', allowEmptyArchive: true
             
-            // Publish test results
-            publishTestResults testResultsPattern: 'test-results.xml'
+            // Test results would be published here if available
+            // publishTestResults testResultsPattern: 'test-results.xml'
 
             // Clean workspace
             cleanWs()

@@ -12,7 +12,6 @@ RUN npm ci --only=production && npm cache clean --force
 
 # Copy source code
 COPY src/ ./src/
-COPY config/ ./config/
 
 # Production stage
 FROM node:18-alpine AS production
