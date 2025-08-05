@@ -1,0 +1,119 @@
+{
+  "name": "mcp-switch-manager-addon",
+  "version": "1.0.0",
+  "description": "Comprehensive network switch management MCP addon supporting Vimins and Sodola switches with advanced VLAN management, real-time diagnostics, and configuration automation",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "lint": "eslint src/",
+    "lint:fix": "eslint src/ --fix",
+    "validate": "node -c src/server.js"
+  },
+  "keywords": [
+    "mcp",
+    "network",
+    "switch",
+    "vlan",
+    "diagnostics",
+    "automation",
+    "vimins",
+    "sodola",
+    "configuration",
+    "monitoring"
+  ],
+  "author": "MCP Switch Manager Team",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "helmet": "^7.0.0",
+    "winston": "^3.10.0",
+    "axios": "^1.4.0",
+    "cheerio": "1.0.0-rc.12",
+    "form-data": "^4.0.0",
+    "tough-cookie": "^4.1.3",
+    "node-cron": "^3.0.2",
+    "lodash": "^4.17.21",
+    "validator": "^13.11.0",
+    "moment": "^2.29.4",
+    "uuid": "^9.0.0",
+    "multer": "^1.4.5-lts.1",
+    "compression": "^1.7.4",
+    "rate-limiter-flexible": "^2.4.1"
+  },
+  "devDependencies": {
+    "jest": "^29.6.2",
+    "nodemon": "^3.0.1",
+    "eslint": "^8.47.0",
+    "eslint-config-standard": "^17.1.0",
+    "eslint-plugin-import": "^2.28.1",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^6.1.1",
+    "supertest": "^6.3.3",
+    "@types/jest": "^29.5.4"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/your-org/mcp-switch-manager-addon.git"
+  },
+  "bugs": {
+    "url": "https://github.com/your-org/mcp-switch-manager-addon/issues"
+  },
+  "homepage": "https://github.com/your-org/mcp-switch-manager-addon#readme",
+  "mcp": {
+    "addon_type": "network_management",
+    "supported_devices": [
+      "vimins_vm-s100-0800ms",
+      "sodola_sl-swtgw218as"
+    ],
+    "capabilities": [
+      "vlan_management",
+      "real_time_diagnostics",
+      "configuration_management",
+      "cross_switch_automation",
+      "performance_monitoring",
+      "backup_restore"
+    ],
+    "api_version": "1.0",
+    "required_permissions": [
+      "network_read",
+      "network_write",
+      "configuration_read",
+      "configuration_write"
+    ]
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "collectCoverageFrom": [
+      "src/**/*.js",
+      "!src/server.js"
+    ],
+    "coverageDirectory": "coverage",
+    "coverageReporters": [
+      "text",
+      "lcov",
+      "html"
+    ]
+  },
+  "eslintConfig": {
+    "extends": [
+      "standard"
+    ],
+    "env": {
+      "node": true,
+      "jest": true
+    },
+    "rules": {
+      "no-console": "warn",
+      "prefer-const": "error"
+    }
+  }
+}
