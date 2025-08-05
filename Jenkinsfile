@@ -61,7 +61,7 @@ pipeline {
                     node -c src/services/switch_managers/SodolaManager.js
                     
                     echo "Validating VLAN management..."
-                    node -c src/services/vlan/VLANManager.js
+                    node -c src/services/vlan/VLANManagerService.js
                     
                     echo "✅ JavaScript syntax check completed"
                 '''
