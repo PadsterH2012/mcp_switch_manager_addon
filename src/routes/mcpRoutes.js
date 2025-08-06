@@ -95,6 +95,7 @@ router.post('/', async (req, res) => {
     }
     
     logger.info(`📞 MCP Request: ${method}`, { params, id, ip: req.ip })
+    logger.debug(`🔍 Full request body:`, req.body)
     
     // Handle special MCP methods
     if (method === 'tools/list') {
