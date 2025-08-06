@@ -1,6 +1,6 @@
 /**
- * MCP Protocol Routes
- * Handles MCP JSON-RPC requests for switch management
+ * MCP Protocol Routes - Updated for Standard MCP 2025 Compliance
+ * Handles both standard tools/call and legacy direct method calls
  */
 
 const express = require('express')
@@ -103,21 +103,85 @@ router.post('/', async (req, res) => {
         description: getToolDescription(name),
         inputSchema: getToolInputSchema(name)
       }))
-      
+
       return res.json({
         jsonrpc: '2.0',
         result: { tools },
         id
       })
     }
-    
+
+    // Handle standard MCP tools/call method (MCP 2025 Standard)
+    if (method === 'tools/call') {
+      const { name: toolName, arguments: toolArgs } = params || {}
+
+      if (!toolName) {
+        return res.status(400).json({
+          jsonrpc: '2.0',
+          error: {
+            code: -32602,
+            message: 'Invalid params',
+            data: 'Tool name is required in tools/call'
+          },
+          id
+        })
+      }
+
+      const toolHandler = mcpTools.get(toolName)
+      if (!toolHandler) {
+        return res.status(404).json({
+          jsonrpc: '2.0',
+          error: {
+            code: -32601,
+            message: 'Method not found',
+            data: `Tool '${toolName}' is not available`
+          },
+          id
+        })
+      }
+
+      try {
+        logger.info(`🔧 Executing tool via tools/call: ${toolName}`, { args: toolArgs, id })
+        const result = await toolHandler(toolArgs || {})
+
+        const duration = Date.now() - startTime
+        logger.info(`✅ MCP tools/call completed: ${toolName} (${duration}ms)`, { id })
+
+        // Return raw result for master-proxy compatibility
+        return res.json({
+          jsonrpc: '2.0',
+          result,
+          id
+        })
+
+      } catch (toolError) {
+        logger.error(`❌ MCP tools/call error: ${toolName}`, {
+          error: toolError.message,
+          args: toolArgs,
+          id,
+          stack: toolError.stack
+        })
+
+        return res.status(500).json({
+          jsonrpc: '2.0',
+          error: {
+            code: -32603,
+            message: 'Internal error',
+            data: toolError.message
+          },
+          id
+        })
+      }
+    }
+
     if (method === 'ping') {
       return res.json({
         jsonrpc: '2.0',
-        result: { 
-          pong: true, 
+        result: {
+          pong: true,
           timestamp: new Date().toISOString(),
-          server: 'MCP Switch Manager Addon'
+          server: 'MCP Switch Manager Addon',
+          protocol: 'MCP 2025 Standard Compliant'
         },
         id
       })
@@ -321,6 +385,7 @@ router.get('/health', (req, res) => {
   res.json({
     status: 'healthy',
     timestamp: new Date().toISOString(),
+    protocol: 'MCP 2025 Standard Compliant',
     services: {
       switchManager: switchManagerStatus,
       vlanManager: vlanManagerStatus
