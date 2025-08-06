@@ -65,12 +65,19 @@ mcpTools.set('discover_network_devices', switchTools.discoverNetworkDevices)
 // MCP JSON-RPC handler
 router.post('/', async (req, res) => {
   const startTime = Date.now()
-  
+
   try {
+    // Add extensive debug logging
+    logger.debug(`🔍 Raw request headers:`, req.headers)
+    logger.debug(`🔍 Raw request body:`, req.body)
+    logger.debug(`🔍 Request content-type:`, req.get('content-type'))
+    logger.debug(`🔍 Request user-agent:`, req.get('user-agent'))
+
     const { jsonrpc, method, params, id } = req.body
-    
+
     // Validate JSON-RPC format
     if (jsonrpc !== '2.0') {
+      logger.error(`❌ Invalid JSON-RPC version: ${jsonrpc}`)
       return res.status(400).json({
         jsonrpc: '2.0',
         error: {
@@ -81,8 +88,9 @@ router.post('/', async (req, res) => {
         id: id || null
       })
     }
-    
+
     if (!method) {
+      logger.error(`❌ Missing method in request`)
       return res.status(400).json({
         jsonrpc: '2.0',
         error: {
@@ -93,7 +101,7 @@ router.post('/', async (req, res) => {
         id: id || null
       })
     }
-    
+
     logger.info(`📞 MCP Request: ${method}`, { params, id, ip: req.ip })
     logger.debug(`🔍 Full request body:`, req.body)
     
