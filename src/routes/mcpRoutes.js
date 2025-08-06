@@ -113,7 +113,10 @@ router.post('/', async (req, res) => {
 
     // Handle standard MCP tools/call method (MCP 2025 Standard)
     if (method === 'tools/call') {
-      const { name: toolName, arguments: toolArgs } = params || {}
+      logger.debug(`🔍 tools/call received params:`, { params, body: req.body })
+      const { name: toolName, arguments: toolArguments } = params || {}
+      const toolArgs = toolArguments
+      logger.debug(`🔍 Parsed toolName: ${toolName}, toolArgs:`, toolArgs)
 
       if (!toolName) {
         return res.status(400).json({
