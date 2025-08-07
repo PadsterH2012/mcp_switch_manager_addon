@@ -145,6 +145,17 @@ class MCPSwitchManagerServer {
   setupRoutes() {
     logger.info('🛣️ Setting up routes...')
 
+    // Debug middleware to log all requests
+    this.app.use((req, res, next) => {
+      logger.debug(`🌐 ${req.method} ${req.path}`, {
+        headers: req.headers,
+        body: req.body,
+        query: req.query,
+        contentType: req.get('content-type')
+      })
+      next()
+    })
+
     // Health check routes
     this.app.use('/health', healthRoutes)
 
