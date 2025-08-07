@@ -68,10 +68,10 @@ router.post('/', async (req, res) => {
 
   try {
     // Add extensive debug logging
-    logger.debug(`🔍 Raw request headers:`, req.headers)
-    logger.debug(`🔍 Raw request body:`, req.body)
-    logger.debug(`🔍 Request content-type:`, req.get('content-type'))
-    logger.debug(`🔍 Request user-agent:`, req.get('user-agent'))
+    logger.info(`🔍 Raw request headers:`, req.headers)
+    logger.info(`🔍 Raw request body:`, req.body)
+    logger.info(`🔍 Request content-type:`, req.get('content-type'))
+    logger.info(`🔍 Request user-agent:`, req.get('user-agent'))
 
     const { jsonrpc, method, params, id } = req.body
 

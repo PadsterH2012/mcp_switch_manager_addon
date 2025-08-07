@@ -147,7 +147,7 @@ class MCPSwitchManagerServer {
 
     // Debug middleware to log all requests
     this.app.use((req, res, next) => {
-      logger.debug(`🌐 ${req.method} ${req.path}`, {
+      logger.info(`🌐 ${req.method} ${req.path}`, {
         headers: req.headers,
         body: req.body,
         query: req.query,
